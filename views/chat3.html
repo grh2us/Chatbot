@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title>Chatbot</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+    <script>
+      function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0'+minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+      }
+       
+      $(function () {
+
+        var socket = io();
+        var date = formatAMPM(new Date());
+
+        $('#m').keypress(function(e) {
+            if(e.which == 13) {
+              var msg = $('#m').val();
+              socket.emit('chat message', msg);
+              info = '<div class="row new_row">' + 
+                        '<div class="container-fluid text-left col-md-6 client">'+ msg +'</div>' +
+                      '</div>'
+
+              $('#messages').append(info);
+              $('#m').val('');
+            }
+        });
+
+        socket.on('chat message', function(msg){
+            info = '<div class="row new_row">' + 
+                      '<div class="container-fluid text-left col-md-offset-6 col-md-6 server">'+ msg +'</div>' +
+                      '</div>'
+            $('#messages').append(info);
+        });
+
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Say Hello!</h3>
+            </div> 
+            <div class="panel-body" id="messages">
+              <!--  <ul class="list-group" id="messages">
+                </ul> -->
+            </div>
+            <div class="input-group" id="test">
+              <input id= "m" type="text" class="form-control" placeholder="Enter message">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="button">Send</button>
+                </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </body>
+
+</html>

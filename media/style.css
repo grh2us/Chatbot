@@ -1,0 +1,41 @@
+.new_row {
+    height: 40px;
+    width: 608.4px;
+}
+
+.client {
+    height: 40px;
+    width: 608.4px;
+    padding-left: 20px;
+    background-color: #ADD8E6;
+    margin: 5px;
+    border-radius: 25px;
+}
+
+.server {
+    height: 40px;
+    width: 608.4px;
+    padding-right: 20px;
+    background-color: #ADFF2F; 
+    margin: 5px;
+    border-radius: 25px;
+}
+
+li.menu-item {
+    margin:0 0 10px 0;
+}
+
+.list-height {
+    width: 100%;
+    height: 300px;
+    overflow-y: scroll;
+    box-sizing: content-box;
+    padding-right: 40px; /* Increase/decrease this value for cross-browser compatibility */
+
+}
+
+.panel-height {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}

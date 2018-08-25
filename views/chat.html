@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title>Chatbot</title>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+    <script>
+      $(function () {
+
+        var socket = io();
+
+        $('#m').keypress(function(e) {
+            if(e.which == 13) {
+              var msg = $('#m').val();
+              socket.emit('chat message', msg);
+              $('#messages').append($("<li class='list-group-item list-group-item-success menu-item'>").text(msg));
+              $('#messages').animate({scrollTop: $('#messages').prop("scrollHeight")}, 500);
+              $('#m').val('');
+            }
+        });
+
+        socket.on('chat message', function(msg){
+            $('#messages').append($("<li class='list-group-item list-group-item-info menu-item'>").text(msg));
+            $('#messages').animate({scrollTop: $('#messages').prop("scrollHeight")}, 500);
+        });
+
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Say Hello!</h3>
+            </div> 
+            <div class="panel-body panel-height">
+                <ul class="list-group list-height" id="messages">
+                </ul>
+            </div>
+            <div class="input-group">
+              <input id= "m" type="text" class="form-control" placeholder="Enter message">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="button">Send</button>
+                </span>
+            </div>  
+          </div>
+        </div>
+      </div>
+    </div> 
+  </body>
+
+</html>
